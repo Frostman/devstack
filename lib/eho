@@ -50,7 +50,7 @@ function install_eho() {
 }
 
 function start_eho() {
-    screen_it eho "cd $EHO_DIR && $EHO_BIN_DIR/eho --reset-db --stub-data"
+    screen_it eho "cd $EHO_DIR && $EHO_BIN_DIR/eho-api --reset-db --stub-data"
 }
 
 function stop_horizon() {
