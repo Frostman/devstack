@@ -122,6 +122,30 @@ if [[ "$ENABLED_SERVICES" =~ "g-api" ]]; then
     fi
 fi
 
+# EHO
+if [[ "$ENABLED_SERVICES" =~ "eho" ]]; then
+    EHO_USER=$(get_id keystone user-create \
+        --name=eho \
+        --pass="$SERVICE_PASSWORD" \
+        --tenant_id $SERVICE_TENANT \
+        --email=eho@example.com)
+    keystone user-role-add \
+        --tenant_id $SERVICE_TENANT \
+        --user_id $EHO_USER \
+        --role_id $ADMIN_ROLE
+
+    EHO_SERVICE=$(get_id keystone service-create \
+        --name=eho \
+        --type=mapreduce \
+        --description="MapReduce Service")
+    keystone endpoint-create \
+        --region RegionOne \
+        --service_id $EHO_SERVICE \
+        --publicurl "http://$SERVICE_HOST:9000/%(tenant_id)" \
+        --adminurl "http://$SERVICE_HOST:9000/%(tenant_id)" \
+        --internalurl "http://$SERVICE_HOST:9000/%(tenant_id)"
+fi
+
 # Swift
 if [[ "$ENABLED_SERVICES" =~ "swift" ]]; then
     SWIFT_USER=$(get_id keystone user-create \
@@ -219,3 +243,4 @@ if [[ "$ENABLED_SERVICES" =~ "tempest" ]]; then
         --user_id $ALT_DEMO_USER \
         --role_id $MEMBER_ROLE
 fi
+

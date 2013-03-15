@@ -40,27 +40,15 @@ function cleanup_eho() {
 function configure_eho() {
     setup_develop $EHO_DIR
 
-    EHO_SERVICE=$(keystone service-create \
-                    --name=eho \
-                    --type=mapreduce \
-                    --description="MapReduce Service" \
-                    | grep " id " | get_field 2)
-    keystone endpoint-create \
-        --region RegionOne \
-        --service_id $EHO_SERVICE \
-        --publicurl "http://$SERVICE_HOST:9000/" \
-        --adminurl "http://$SERVICE_HOST:9000/" \
-        --internalurl "http://$SERVICE_HOST:9000/"
-
     # configure eho to use mysql installation
 
     echo "# OPENSTACK CONF
 OS_AUTH_PROTOCOL = 'http'
 OS_AUTH_HOST = '127.0.0.1'
 OS_AUTH_PORT = '35357'
-OS_ADMIN_USER = 'admin'
-OS_ADMIN_PASSWORD = 'swordfish'
-OS_ADMIN_TENANT = 'admin'
+OS_ADMIN_USER = 'eho'
+OS_ADMIN_PASSWORD = '$SERVICE_PASSWORD'
+OS_ADMIN_TENANT = '$SERVICE_TENANT'
 
 # NODE CONF
 NODE_USER = 'root'
