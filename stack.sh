@@ -1210,11 +1210,15 @@ fi
 
 if is_service_enabled eho; then
     echo_summary "Uploading EHO images"
+
+    TOKEN=$(keystone token-get | grep ' id ' | get_field 2)
     for eho_image_url in ${EHO_IMAGE_URLS//,/ }; do
         upload_image $eho_image_url $TOKEN
     done
+
     echo_summary "Configuring EHO"
     init_eho
+
     echo_summary "Starting EHO"
     start_eho
 fi
