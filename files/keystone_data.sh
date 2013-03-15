@@ -141,9 +141,9 @@ if [[ "$ENABLED_SERVICES" =~ "eho" ]]; then
     keystone endpoint-create \
         --region RegionOne \
         --service_id $EHO_SERVICE \
-        --publicurl "http://$SERVICE_HOST:9000/%(tenant_id)" \
-        --adminurl "http://$SERVICE_HOST:9000/%(tenant_id)" \
-        --internalurl "http://$SERVICE_HOST:9000/%(tenant_id)"
+        --publicurl "http://$SERVICE_HOST:9000/v0.2/%(tenant_id)s" \
+        --adminurl "http://$SERVICE_HOST:9000/v0.2/%(tenant_id)s" \
+        --internalurl "http://$SERVICE_HOST:9000/v0.2/%(tenant_id)s"
 fi
 
 # Swift
