@@ -67,7 +67,7 @@ function install_eho() {
 }
 
 function start_eho() {
-    screen_it eho "cd $EHO_DIR && $EHO_BIN_DIR/eho-api --reset-db --stub-data --allow-cluster-ops"
+    screen_it eho "cd $EHO_DIR && $EHO_BIN_DIR/eho-api --reset-db --stub-data --allow-cluster-ops --log-level DEBUG"
 }
 
 function stop_horizon() {
