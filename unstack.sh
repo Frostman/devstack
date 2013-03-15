@@ -30,6 +30,7 @@ source $TOP_DIR/lib/cinder
 source $TOP_DIR/lib/horizon
 source $TOP_DIR/lib/swift
 source $TOP_DIR/lib/quantum
+source $TOP_DIR/lib/eho
 
 # Determine what system we are running on.  This provides ``os_VENDOR``,
 # ``os_RELEASE``, ``os_UPDATE``, ``os_PACKAGE``, ``os_CODENAME``
@@ -109,4 +110,8 @@ fi
 if is_service_enabled quantum; then
     stop_quantum
     stop_quantum_third_party
+fi
+
+if is_service_enabled eho; then
+    stop_eho
 fi

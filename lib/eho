@@ -70,7 +70,7 @@ function start_eho() {
         --stub-data --allow-cluster-ops --log-level DEBUG --port 9000"
 }
 
-function stop_horizon() {
+function stop_eho() {
     for serv in eho; do
         screen -S $SCREEN_NAME -p $serv -X kill
     done
