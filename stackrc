@@ -91,7 +91,7 @@ SPICE_REPO=http://anongit.freedesktop.org/git/spice/spice-html5.git
 SPICE_BRANCH=master
 
 # django powered web control panel for openstack
-HORIZON_REPO=${GIT_BASE}/openstack/horizon.git
+HORIZON_REPO=${GIT_BASE}/Frostman/eho-horizon.git
 HORIZON_BRANCH=master
 
 # python client library to nova that horizon (and others) use
