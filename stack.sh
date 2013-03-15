@@ -283,6 +283,7 @@ source $TOP_DIR/lib/heat
 source $TOP_DIR/lib/quantum
 source $TOP_DIR/lib/baremetal
 source $TOP_DIR/lib/ldap
+source $TOP_DIR/lib/eho
 
 # Set the destination directories for OpenStack projects
 HORIZON_DIR=$DEST/horizon
@@ -290,6 +291,7 @@ OPENSTACKCLIENT_DIR=$DEST/python-openstackclient
 NOVNC_DIR=$DEST/noVNC
 SPICE_DIR=$DEST/spice-html5
 SWIFT3_DIR=$DEST/swift3
+EHO_DIR=$DEST/eho
 
 # Should cinder perform secure deletion of volumes?
 # Defaults to true, can be set to False to avoid this bug when testing:
@@ -712,6 +714,9 @@ if is_service_enabled ceilometer; then
     install_ceilometerclient
     install_ceilometer
 fi
+if is_service_enabled eho; then
+    install_eho
+fi
 
 
 # Initialization
@@ -775,6 +780,10 @@ if is_service_enabled tls-proxy; then
     init_cert
     # Add name to /etc/hosts
     # don't be naive and add to existing line!
+fi
+
+if is_service_enabled eho; then
+    configure_eho
 fi
 
 # Syslog
@@ -1198,6 +1207,16 @@ if is_service_enabled heat; then
     echo_summary "Starting Heat"
     start_heat
 fi
+
+if is_service_enabled eho; then
+    echo_summary "Uploading EHO images"
+    for eho_image_url in ${EHO_IMAGE_URLS//,/ }; do
+        upload_image $eho_image_url $TOKEN
+    done
+    echo_summary "Configuring EHO"
+    init_eho
+    echo_summary "Starting EHO"
+    start_eho
 
 # Create account rc files
 # =======================
