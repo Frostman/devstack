@@ -1217,6 +1217,7 @@ if is_service_enabled eho; then
     init_eho
     echo_summary "Starting EHO"
     start_eho
+fi
 
 # Create account rc files
 # =======================

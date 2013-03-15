@@ -42,6 +42,7 @@ function configure_eho() {
 }
 
 function init_eho() {
+    echo "init eho"
 }
 
 function install_eho() {
