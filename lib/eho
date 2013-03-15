@@ -39,10 +39,27 @@ function cleanup_eho() {
 
 function configure_eho() {
     setup_develop $EHO_DIR
+
+    # configure eho to use mysql installation
+
+    echo "
+    # OPENSTACK CONF
+    OS_AUTH_PROTOCOL = 'http'
+    OS_AUTH_HOST = '127.0.0.1'
+    OS_AUTH_PORT = '35357'
+    OS_ADMIN_USER = 'admin'
+    OS_ADMIN_PASSWORD = 'swordfish'
+    OS_ADMIN_TENANT = 'admin'
+
+    # NODE CONF
+    NODE_USER = 'root'
+    NODE_PASSWORD = 'swordfish'
+    NODE_INTERNAL_NET = 'novanetwork'
+    " > $EHO_DIR/etc/local.cfg
 }
 
 function init_eho() {
-    echo "init eho"
+    echo "init eho: here we should init db using eho-manage"
 }
 
 function install_eho() {
