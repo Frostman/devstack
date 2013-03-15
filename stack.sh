@@ -1208,21 +1208,6 @@ if is_service_enabled heat; then
     start_heat
 fi
 
-if is_service_enabled eho; then
-    echo_summary "Uploading EHO images"
-
-    TOKEN=$(keystone token-get | grep ' id ' | get_field 2)
-    for eho_image_url in ${EHO_IMAGE_URLS//,/ }; do
-        upload_image $eho_image_url $TOKEN
-    done
-
-    echo_summary "Configuring EHO"
-    init_eho
-
-    echo_summary "Starting EHO"
-    start_eho
-fi
-
 # Create account rc files
 # =======================
 
@@ -1364,6 +1349,21 @@ fi
 # Warn that the default flavors have been changed by Heat
 if is_service_enabled heat; then
     echo "Heat has replaced the default flavors. View by running: nova flavor-list"
+fi
+
+if is_service_enabled eho; then
+    echo_summary "Uploading EHO images"
+
+    TOKEN=$(keystone token-get | grep ' id ' | get_field 2)
+    for eho_image_url in ${EHO_IMAGE_URLS//,/ }; do
+        upload_image $eho_image_url $TOKEN
+    done
+
+    echo_summary "Configuring EHO"
+    init_eho
+
+    echo_summary "Starting EHO"
+    start_eho
 fi
 
 # If Keystone is present you can point ``nova`` cli to this server
