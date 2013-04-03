@@ -1,0 +1,80 @@
+# lib/eho
+# Functions to control the configuration and operation of the EHO service
+# <do not include this template file in ``stack.sh``!>
+
+# ``stack.sh`` calls the entry points in this order:
+#
+# install_svanna
+# configure_savanna
+# init_savanna
+# start_savanna
+# stop_savanna
+# cleanup_savanna
+
+# Save trace setting
+XTRACE=$(set +o | grep xtrace)
+set +o xtrace
+
+source $TOP_DIR/openrc
+
+# Defaults
+# --------
+
+# <define global variables here that belong to this project>
+
+# Set up default directories
+SAVANNA_DIR=$DEST/savanna
+
+if [[ -d $SAVANNA_DIR/bin ]]; then
+    SAVANNA_BIN_DIR=$SAVANNA_DIR/bin
+else
+    SAVANNA_BIN_DIR=$(get_python_exec_prefix)
+fi
+
+# Entry Points
+# ------------
+
+function cleanup_savanna() {
+    echo "SAVANNA has been cleaned"
+}
+
+function configure_savanna() {
+    setup_develop $SAVANNA_DIR
+
+    # configure eho to use mysql installation
+
+    echo "
+[DEFAULT]
+allow_cluster_ops=true
+
+os_auth_host=127.0.0.1
+os_admin_password=$OS_PASSWORD
+
+[cluster_node]
+
+[sqlalchemy]
+
+" > $SAVANNA_DIR/etc/savanna/savanna.conf
+}
+
+function init_savanna() {
+    echo "init savanna"
+    $SAVANNA_BIN_DIR/savanna-manage --config-file $SAVANNA_DIR/etc/savanna/savanna.conf reset-db --with-gen-templates
+}
+
+function install_savanna() {
+    git_clone $SAVANNA_REPO $SAVANNA_DIR $SAVANNA_BRANCH $SAVANNA_TAG
+}
+
+function start_savanna() {
+    screen_it savanna "cd $SAVANNA_DIR && $SAVANNA_BIN_DIR/savanna-api --config-file $SAVANNA_DIR/etc/savanna/savanna.conf"
+}
+
+function stop_savanna() {
+    for serv in savanna; do
+        screen -S $SCREEN_NAME -p $serv -X kill
+    done
+}
+
+# Restore xtrace
+$XTRACE
