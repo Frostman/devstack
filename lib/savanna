@@ -41,8 +41,6 @@ function cleanup_savanna() {
 function configure_savanna() {
     setup_develop $SAVANNA_DIR
 
-    # configure eho to use mysql installation
-
     echo "
 [DEFAULT]
 allow_cluster_ops=true
@@ -51,7 +49,7 @@ os_auth_host=127.0.0.1
 os_admin_password=$OS_PASSWORD
 
 [cluster_node]
-user_floating_ips=false
+use_floating_ips=false
 [sqlalchemy]
 
 " > $SAVANNA_DIR/etc/savanna/savanna.conf
