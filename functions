@@ -1006,6 +1006,16 @@ function upload_image() {
     CONTAINER_FORMAT=""
     UNPACK=""
     case "$IMAGE_FNAME" in
+	*.qcow2.tar.gz)
+            IMAGE_NAME="${IMAGE_FNAME%.qcow2.tar.gz}"
+            xdir="$FILES/images/$IMAGE_NAME"
+            rm -Rf "$xdir";
+            mkdir "$xdir"
+            tar -zxf $FILES/$IMAGE_FNAME -C "$xdir"
+            IMAGE="$xdir/$IMAGE_NAME.img"
+	    DISK_FORMAT=qcow2
+	    CONTAINER_FORMAT=bare
+            ;;
         *.tar.gz|*.tgz)
             # Extract ami and aki files
             [ "${IMAGE_FNAME%.tar.gz}" != "$IMAGE_FNAME" ] &&
@@ -1048,13 +1058,6 @@ function upload_image() {
             IMAGE_NAME=$(basename "$IMAGE" ".qcow2")
             DISK_FORMAT=qcow2
             CONTAINER_FORMAT=bare
-            ;;
-        *.qcow2.gz)
-            IMAGE="$FILES/${IMAGE_FNAME}"
-            IMAGE_NAME=$(basename "$IMAGE" ".qcow2.gz")
-            DISK_FORMAT=qcow2
-            CONTAINER_FORMAT=bare
-            UNPACK=zcat
             ;;
         *) echo "Do not know what to do with $IMAGE_FNAME"; false;;
     esac

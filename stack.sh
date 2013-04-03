@@ -283,7 +283,7 @@ source $TOP_DIR/lib/heat
 source $TOP_DIR/lib/quantum
 source $TOP_DIR/lib/baremetal
 source $TOP_DIR/lib/ldap
-source $TOP_DIR/lib/eho
+source $TOP_DIR/lib/savanna
 
 # Set the destination directories for OpenStack projects
 HORIZON_DIR=$DEST/horizon
@@ -291,7 +291,7 @@ OPENSTACKCLIENT_DIR=$DEST/python-openstackclient
 NOVNC_DIR=$DEST/noVNC
 SPICE_DIR=$DEST/spice-html5
 SWIFT3_DIR=$DEST/swift3
-EHO_DIR=$DEST/eho
+SAVANNA_DIR=$DEST/savanna
 
 # Should cinder perform secure deletion of volumes?
 # Defaults to true, can be set to False to avoid this bug when testing:
@@ -714,8 +714,8 @@ if is_service_enabled ceilometer; then
     install_ceilometerclient
     install_ceilometer
 fi
-if is_service_enabled eho; then
-    install_eho
+if is_service_enabled savanna; then
+    install_savanna
 fi
 
 
@@ -782,8 +782,8 @@ if is_service_enabled tls-proxy; then
     # don't be naive and add to existing line!
 fi
 
-if is_service_enabled eho; then
-    configure_eho
+if is_service_enabled savanna; then
+    configure_savanna
 fi
 
 # Syslog
@@ -1351,19 +1351,19 @@ if is_service_enabled heat; then
     echo "Heat has replaced the default flavors. View by running: nova flavor-list"
 fi
 
-if is_service_enabled eho; then
-    echo_summary "Uploading EHO images"
+if is_service_enabled savanna; then
+    echo_summary "Uploading SAVANNA images"
 
     TOKEN=$(keystone token-get | grep ' id ' | get_field 2)
-    for eho_image_url in ${EHO_IMAGE_URLS//,/ }; do
-        upload_image $eho_image_url $TOKEN
+    for savanna_image_url in ${SAVANNA_IMAGE_URLS//,/ }; do
+        upload_image $savanna_image_url $TOKEN
     done
 
-    echo_summary "Configuring EHO"
-    init_eho
+    echo_summary "Configuring SAVANNA"
+    init_savanna
 
-    echo_summary "Starting EHO"
-    start_eho
+    echo_summary "Starting SAVANNA"
+    start_savanna
 fi
 
 # If Keystone is present you can point ``nova`` cli to this server

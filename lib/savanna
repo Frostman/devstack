@@ -1,4 +1,4 @@
-# lib/eho
+# lib/savanna
 # Functions to control the configuration and operation of the EHO service
 # <do not include this template file in ``stack.sh``!>
 
@@ -51,7 +51,7 @@ os_auth_host=127.0.0.1
 os_admin_password=$OS_PASSWORD
 
 [cluster_node]
-
+user_floating_ips=false
 [sqlalchemy]
 
 " > $SAVANNA_DIR/etc/savanna/savanna.conf
